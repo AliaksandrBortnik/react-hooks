@@ -1,16 +1,25 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import IngredientForm from './IngredientForm';
 import Search from './Search';
 
 function Ingredients() {
+  const [ingredients, setIngredients] = useState([]);
+
+  const addIngredientHandler = (ingredient) => {
+    setIngredients(prevState => ([
+      ...prevState,
+      ingredient
+    ]));
+  };
+
   return (
     <div className="App">
-      <IngredientForm />
+      <IngredientForm onSubmit={addIngredientHandler}/>
 
       <section>
         <Search />
-        {/* Need to add list here! */}
+        {/* TODO: display a list of ingredients */}
       </section>
     </div>
   );
