@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 
 import IngredientForm from './IngredientForm';
 import Search from './Search';
@@ -7,21 +7,8 @@ import IngredientList from './IngredientList';
 function Ingredients() {
   const [ingredients, setIngredients] = useState([]);
 
-  useEffect(() => {
-    fetch('https://react-complete-hooks-default-rtdb.europe-west1.firebasedatabase.app/ingredients.json')
-      .then(resp => resp.json())
-      .then(data => {
-        console.log('Received data from API', data);
-        const ingredients = [];
-        for (const key in data) {
-          ingredients.push({
-            id: key,
-            title: data[key].title,
-            amount: data[key].amount
-          });
-        }
-        setIngredients(ingredients);
-      });
+  const searchChangeHandler = useCallback((ingredients) => {
+    setIngredients(ingredients);
   }, []);
 
   const addIngredientHandler = (ingredient) => {
@@ -50,7 +37,7 @@ function Ingredients() {
       <IngredientForm onSubmit={addIngredientHandler}/>
 
       <section>
-        <Search />
+        <Search onSearchResults={searchChangeHandler}/>
         <IngredientList
           ingredients={ingredients}
           onRemoveItem={removeIngredientHandler}
