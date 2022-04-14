@@ -62,7 +62,7 @@ function Ingredients() {
     dispatch({ type: 'SEARCH_RESULT', ingredients });
   }, []);
 
-  const addIngredientHandler = (ingredient) => {
+  const addIngredientHandler = useCallback((ingredient) => {
     // setIsLoading(true);
     dispatch({ type: 'START_LOADING' });
 
@@ -88,9 +88,9 @@ function Ingredients() {
         // setIsLoading(false);
         dispatch({ type: 'ERROR_OCCURIED', error: error.message })
       });
-  };
+  }, []);
 
-  const removeIngredientHandler = (ingredientId) => {
+  const removeIngredientHandler = useCallback((ingredientId) => {
     // setIsLoading(true);
     dispatch({ type: 'START_LOADING' });
 
@@ -109,10 +109,13 @@ function Ingredients() {
         // setIsLoading(false);
         dispatch({ type: 'ERROR_OCCURIED', error: error.message })
       });
-  };
+  }, []);
 
   // const clearError = () => setError(null);
-  const clearError = () => dispatch({ type: 'CLEAR_ERROR' });
+  const clearError = useCallback(
+    () => dispatch({ type: 'CLEAR_ERROR' }),
+    []
+  );
 
   return (
     <div className="App">
