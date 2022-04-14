@@ -7,13 +7,30 @@ import IngredientList from './IngredientList';
 function Ingredients() {
   const [ingredients, setIngredients] = useState([]);
 
+  useEffect(() => {
+    fetch('https://react-complete-hooks-default-rtdb.europe-west1.firebasedatabase.app/ingredients.json')
+      .then(resp => resp.json())
+      .then(data => {
+        console.log('Received data from API', data);
+        const ingredients = [];
+        for (const key in data) {
+          ingredients.push({
+            id: key,
+            title: data[key].title,
+            amount: data[key].amount
+          });
+        }
+        setIngredients(ingredients);
+      });
+  }, []);
+
   const addIngredientHandler = (ingredient) => {
-    fetch('https://react-hooks-update.firebaseio.com/ingredients.json',{
+    fetch('https://react-complete-hooks-default-rtdb.europe-west1.firebasedatabase.app/ingredients.json',{
       method: 'POST',
       body: JSON.stringify(ingredient),
       headers: { 'Content-Type': 'application/json' }
     })
-      .then((resp) => resp.json)
+      .then((resp) => resp.json())
       .then(data => {
         setIngredients(prevState => [
           ...prevState,
