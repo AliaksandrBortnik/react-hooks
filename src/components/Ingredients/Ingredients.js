@@ -3,10 +3,12 @@ import React, {useCallback, useState} from 'react';
 import IngredientForm from './IngredientForm';
 import Search from './Search';
 import IngredientList from './IngredientList';
+import ErrorModal from '../UI/ErrorModal';
 
 function Ingredients() {
   const [ingredients, setIngredients] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
 
   const searchChangeHandler = useCallback((ingredients) => {
     setIngredients(ingredients);
@@ -27,6 +29,10 @@ function Ingredients() {
           { id: data.name, ...ingredient }
         ]);
         setIsLoading(false);
+      })
+      .catch(error => {
+        setError(error.message);
+        setIsLoading(false);
       });
   };
 
@@ -41,11 +47,19 @@ function Ingredients() {
           prevIngredients.filter(i => i.id !== ingredientId)
         );
         setIsLoading(false);
+      })
+      .catch(error => {
+        setError(error.message);
+        setIsLoading(false);
       });
   };
 
+  const clearError = () => setError(null);
+
   return (
     <div className="App">
+      {error && <ErrorModal onClose={clearError}>{error}</ErrorModal>}
+
       <IngredientForm onSubmit={addIngredientHandler} isLoading={isLoading}/>
 
       <section>
