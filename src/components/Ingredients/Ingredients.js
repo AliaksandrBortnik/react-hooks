@@ -31,9 +31,9 @@ function Ingredients() {
       method: 'DELETE'
     })
       .then(_ => {
-        setIngredients(prevIngredients => [
-          ...prevIngredients.filter(i => i.id !== ingredientId)
-        ]);
+        setIngredients(prevIngredients =>
+          prevIngredients.filter(i => i.id !== ingredientId)
+        );
       });
   };
 
