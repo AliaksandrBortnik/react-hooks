@@ -6,12 +6,15 @@ import IngredientList from './IngredientList';
 
 function Ingredients() {
   const [ingredients, setIngredients] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const searchChangeHandler = useCallback((ingredients) => {
     setIngredients(ingredients);
   }, []);
 
   const addIngredientHandler = (ingredient) => {
+    setIsLoading(true);
+
     fetch('https://react-complete-hooks-default-rtdb.europe-west1.firebasedatabase.app/ingredients.json',{
       method: 'POST',
       body: JSON.stringify(ingredient),
@@ -23,10 +26,13 @@ function Ingredients() {
           ...prevState,
           { id: data.name, ...ingredient }
         ]);
+        setIsLoading(false);
       });
   };
 
   const removeIngredientHandler = (ingredientId) => {
+    setIsLoading(true);
+
     fetch(`https://react-complete-hooks-default-rtdb.europe-west1.firebasedatabase.app/ingredients/${ingredientId}.json`,{
       method: 'DELETE'
     })
@@ -34,12 +40,13 @@ function Ingredients() {
         setIngredients(prevIngredients =>
           prevIngredients.filter(i => i.id !== ingredientId)
         );
+        setIsLoading(false);
       });
   };
 
   return (
     <div className="App">
-      <IngredientForm onSubmit={addIngredientHandler}/>
+      <IngredientForm onSubmit={addIngredientHandler} isLoading={isLoading}/>
 
       <section>
         <Search onSearchResults={searchChangeHandler}/>
