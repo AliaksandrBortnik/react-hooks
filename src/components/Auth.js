@@ -1,10 +1,15 @@
-import React from 'react';
+import React, {useContext} from 'react';
 
 import Card from './UI/Card';
 import './Auth.css';
+import {AuthContext} from '../store/AuthContext';
 
 const Auth = props => {
-  const loginHandler = () => {};
+  const {setIsLoggedIn} = useContext(AuthContext);
+  const loginHandler = () => {
+    // Some successful log-in logic
+    setIsLoggedIn(true);
+  };
 
   return (
     <div className="auth">
